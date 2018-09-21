@@ -21,10 +21,23 @@ class Application(NanohttpApplication):
 
     """
 
+    #: The configuration settings of the application such as database URL
     __configuration__ = None
+
+    # TODO: ``LoggerProxy`` must be a link to class
+    #: The application loggers using ``LoggerProxy`` include: info, debug,
+    #: error and etc... logs
     __logger__ = get_logger()
+
+    # TODO: ``authentication`` module must be a link to class
+    #: The authenticator of the application which must be inherited from
+    #: ``restfulpy.authentication``
     __authenticator__ = None
+
+    # TODO: I have no idea what it does
     __configuration_cipher__ = None
+
+    #: The engine for connecting to database
     engine = None
 
     def __init__(self, name: str, root: Controller, root_path='.',
@@ -47,6 +60,13 @@ class Application(NanohttpApplication):
             self.__authenticator__ = Authenticator()
 
     def _handle_exception(self, ex, start_response):
+
+        """
+        Converts plain dictionary to instance of this class.
+
+        .. seealso:: :meth:`sqlalchemy.ext.mutable.MutableDict.coerce`
+
+        """
         if isinstance(ex, SQLAlchemyError):
             ex = SqlError(ex)
             self.__logger__.exception(str(ex))
