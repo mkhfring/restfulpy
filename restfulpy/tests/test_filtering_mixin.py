@@ -134,3 +134,7 @@ def test_filtering_mixin(db):
     with Context({'QUERY_STRING': 'length=3'}):
         assert Interval.filter_by_request(query).count() == 1
 
+    # Get sure filtering on hybrid property works correctly
+    with Context({'QUERY_STRING': 'length=2'}):
+        assert Interval.filter_by_request(query).count() == 0
+
